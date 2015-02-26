@@ -8,31 +8,30 @@ public class MyPref implements IMyPref {
 	
 	// Constructor for the class. Initialize variables here.
 	public MyPref() {
-		
 	}
 
 	@Override
 	public void setMyName(String stringOfName) {
 		// TODO Auto-generated method stub
-		
+		myName = stringOfName;
 	}
 
 	@Override
 	public String getMyName() {
 		// TODO Auto-generated method stub
-		return null;
+		return myName;
 	}
 
 	@Override
 	public void setMyEmail(String stringOfEmail) {
 		// TODO Auto-generated method stub
-		
+		myEmail = stringOfEmail;
 	}
 
 	@Override
 	public String getMyEmail() {
 		// TODO Auto-generated method stub
-		return null;
+		return myEmail;
 	}
 
 	@Override
