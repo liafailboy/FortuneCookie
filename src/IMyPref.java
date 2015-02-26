@@ -1,10 +1,5 @@
 public interface IMyPref {
 
-	String myName;
-	String myUserID;
-	String myEmail;
-	Person[] arrayOfPerson;
-
 	void setMyName(String stringOfName);
 
 	String getMyName();
@@ -17,10 +12,10 @@ public interface IMyPref {
 
 	String getMyUserId();
 
-	void addPerson(Person person);
+	void addPerson(IPerson person);
 
 	// throws NoSuchElementException if there is no person in the array
-	void removePerson(Person person);
+	void removePerson(IPerson person);
 
-	Person[] getArrayOfPerson();
+	IPerson[] getArrayOfPerson();
 }

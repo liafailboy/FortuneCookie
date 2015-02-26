@@ -1,5 +1,15 @@
 
 public class MyPref implements IMyPref {
+	
+	String myName;
+	String myUserID;
+	String myEmail;
+	IPerson[] arrayOfPerson;
+	
+	// Constructor for the class. Initialize variables here.
+	public MyPref() {
+		
+	}
 
 	@Override
 	public void setMyName(String stringOfName) {
@@ -38,19 +48,29 @@ public class MyPref implements IMyPref {
 	}
 
 	@Override
-	public void addPerson(Person person) {
+	public void addPerson(IPerson person) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void removePerson(Person person) {
+	public void removePerson(IPerson person) {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	/* This method should return the array of IPerson with the specified order
+	 * Compare the level of the person in the array and make the order
+	 * from highest to lowest.
+	 * You should call this method every time after you added or removed person from the array
+	 */
+	private IPerson[] arrangeArrayOfPerson() {
+		
+		return null;
+	}
 
 	@Override
-	public Person[] getArrayOfPerson() {
+	public IPerson[] getArrayOfPerson() {
 		// TODO Auto-generated method stub
 		return null;
 	}
