@@ -1,0 +1,30 @@
+WHILE ON WORKING BRANCH
+
+// get the data from github
+git pull origin master
+
+***DO WORK HERE AND MAKE SURE IT WORKS FINE***
+
+// add the files or changes you made
+git add .
+
+// commit (save) the difference you made
+git commit -m "MESSAGE"
+
+// change the current branch to master
+git checkout master
+
+WHILE ON MASTER
+
+// merge the data from working to master
+git merge working
+
+// send the data to github
+git push
+
+// change the current branch to working
+git checkout working
+
+
+// check the current status
+git status
