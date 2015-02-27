@@ -52,6 +52,20 @@ public class MyPref implements IMyPref {
 	@Override
 	public void addPerson(IPerson person) {
 		// TODO Auto-generated method stub
+		boolean isAdded = false;
+		IPerson tmpValuePrev = null;
+		IPerson tmpValueNext = null;
+		for(int i = 0; i < arrayOfPerson.length; i++){
+			if(person.getPersonLevel() > arrayOfPerson[i].getPersonLevel() && !isAdded){
+			tmpValuePrev = arrayOfPerson[i];
+			arrayOfPerson[i] = person;
+			isAdded = true;
+			} if(isAdded && i < arrayOfPerson.length - 1){
+				tmpValueNext = arrayOfPerson[i + 1];
+				arrayOfPerson[i + 1] = tmpValuePrev;
+				tmpValuePrev = tmpValueNext;
+			}
+		}
 	}
 	
 	@Override
@@ -62,6 +76,6 @@ public class MyPref implements IMyPref {
 	@Override
 	public IPerson[] getArrayOfPerson() {
 		// TODO Auto-generated method stub
-		return null;
+		return arrayOfPerson;
 	}
 }
