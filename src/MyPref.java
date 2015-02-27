@@ -59,11 +59,15 @@ public class MyPref implements IMyPref {
 		IPerson tmpValuePrev = null;
 		IPerson tmpValueNext = null;
 		for(int i = 0; i < arrayOfPerson.length; i++){
-			if(person.getPersonLevel() > arrayOfPerson[i].getPersonLevel() && !isAdded){
+			if(arrayOfPerson[i] != null && person.getPersonLevel() > arrayOfPerson[i].getPersonLevel() && !isAdded){
 			tmpValuePrev = arrayOfPerson[i];
 			arrayOfPerson[i] = person;
 			isAdded = true;
-			} if(isAdded && i < arrayOfPerson.length - 1){
+			} else if(arrayOfPerson[i] == null && !isAdded){
+				arrayOfPerson[i] = person;
+				isAdded = true;
+			}
+			if(isAdded && i < arrayOfPerson.length - 1){
 				tmpValueNext = arrayOfPerson[i + 1];
 				arrayOfPerson[i + 1] = tmpValuePrev;
 				tmpValuePrev = tmpValueNext;

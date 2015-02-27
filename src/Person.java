@@ -13,7 +13,7 @@ public class Person implements IPerson {
 		this.userEmail = userEmail;
 		this.userName = userName;
 		this.myUserLevel = myUserLevel;
-		this.personUserLevel = myUserLevel;
+		this.personUserLevel = personUserLevel;
 	}
 	
 	// default constructor
