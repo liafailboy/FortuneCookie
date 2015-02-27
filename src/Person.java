@@ -8,12 +8,17 @@ public class Person implements IPerson {
 	int personUserLevel;
 	
 	// Constructor for the class. Initialize variables here.
-	public Person() {
-		userID = "";
-		userEmail = "";
-		userName = "";
+	public Person(String userID, String userEmail, String userName) {
+		this.userID = userID;
+		this.userEmail = userEmail;
+		this.userName = userName;
 		myUserLevel = 0;
 		personUserLevel = 0;
+	}
+	
+	// default constructor
+	public Person() {
+		this("", "", "");
 	}
 	
 	@Override
