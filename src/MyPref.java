@@ -7,11 +7,16 @@ public class MyPref implements IMyPref {
 	IPerson[] arrayOfPerson;
 	
 	// Constructor for the class. Initialize variables here.
-	public MyPref() {
-		myName = "";
-		myUserID = "";
-		myEmail = "";
+	public MyPref(String myName, String myUserID, String myEmail) {
+		this.myName = myName;
+		this.myUserID = myUserID;
+		this.myEmail = myEmail;
 		arrayOfPerson = new IPerson[11];
+	}
+	
+	// default constructor
+	public MyPref() {
+		this("", "", "");
 	}
 
 	@Override
