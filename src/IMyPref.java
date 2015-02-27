@@ -14,8 +14,5 @@ public interface IMyPref {
 
 	void addPerson(IPerson person);
 
-	// throws NoSuchElementException if there is no person in the array
-	void removePerson(IPerson person);
-
 	IPerson[] getArrayOfPerson();
 }

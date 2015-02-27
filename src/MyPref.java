@@ -51,7 +51,10 @@ public class MyPref implements IMyPref {
 
 	@Override
 	public void addPerson(IPerson person) {
-		// TODO Auto-generated method stub
+		// throw exception if the argument is null
+		if (null == person) {
+			throw new IllegalArgumentException("Argument person was null");
+		}
 		boolean isAdded = false;
 		IPerson tmpValuePrev = null;
 		IPerson tmpValueNext = null;
@@ -69,13 +72,7 @@ public class MyPref implements IMyPref {
 	}
 	
 	@Override
-	public void removePerson(IPerson person) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
 	public IPerson[] getArrayOfPerson() {
-		// TODO Auto-generated method stub
 		return arrayOfPerson;
 	}
 }
