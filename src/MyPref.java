@@ -11,7 +11,7 @@ public class MyPref implements IMyPref {
 		this.myName = myName;
 		this.myUserID = myUserID;
 		this.myEmail = myEmail;
-		arrayOfPerson = new IPerson[11];
+		arrayOfPerson = new IPerson[10];
 	}
 	
 	// default constructor
@@ -59,11 +59,10 @@ public class MyPref implements IMyPref {
 	public void addPerson(IPerson person) {
 		// TODO Auto-generated method stub
 	}
-
+	
 	@Override
 	public void removePerson(IPerson person) {
 		// TODO Auto-generated method stub
-		
 	}
 	
 	/* This method should return the array of IPerson with the specified order
@@ -72,7 +71,6 @@ public class MyPref implements IMyPref {
 	 * You should call this method every time after you added or removed person from the array
 	 */
 	private IPerson[] arrangeArrayOfPerson() {
-		
 		return null;
 	}
 
