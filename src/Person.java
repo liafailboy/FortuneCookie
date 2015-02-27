@@ -9,38 +9,42 @@ public class Person implements IPerson {
 	
 	// Constructor for the class. Initialize variables here.
 	public Person() {
-		
+		userID = "";
+		userEmail = "";
+		userName = "";
+		myUserLevel = 0;
+		personUserLevel = 0;
 	}
 	
 	@Override
 	public String getUserId() {
 		// TODO Auto-generated method stub
-		return null;
+		return userID;
 	}
 	@Override
 	public String getUserEmail() {
 		// TODO Auto-generated method stub
-		return null;
+		return userEmail;
 	}
 	@Override
 	public String getUserName() {
 		// TODO Auto-generated method stub
-		return null;
+		return userName;
 	}
 	@Override
 	public int getPersonLevel() {
 		// TODO Auto-generated method stub
-		return 0;
+		return myUserLevel + personUserLevel * 2;
 	}
 	@Override
 	public void setMyUserLevel(int myLevel) {
 		// TODO Auto-generated method stub
-		
+		myUserLevel = myLevel;
 	}
 	@Override
 	public void setPersonUserLevel(int personLevel) {
 		// TODO Auto-generated method stub
-		
+		personUserLevel = personLevel;
 	}
 	
 }

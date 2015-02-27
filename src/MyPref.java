@@ -8,6 +8,10 @@ public class MyPref implements IMyPref {
 	
 	// Constructor for the class. Initialize variables here.
 	public MyPref() {
+		myName = "";
+		myUserID = "";
+		myEmail = "";
+		arrayOfPerson = new IPerson[11];
 	}
 
 	@Override
@@ -37,19 +41,18 @@ public class MyPref implements IMyPref {
 	@Override
 	public void setMyUserId(String stringOfUserId) {
 		// TODO Auto-generated method stub
-		
+		myUserID = stringOfUserId;
 	}
 
 	@Override
 	public String getMyUserId() {
 		// TODO Auto-generated method stub
-		return null;
+		return myUserID;
 	}
 
 	@Override
 	public void addPerson(IPerson person) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
