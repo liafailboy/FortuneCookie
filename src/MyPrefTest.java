@@ -19,5 +19,5 @@ public class MyPrefTest {
 		String str = pref.getMyName();
 		assertEquals(str,"Eriko Sasaki");
 	}
-
+	
 }
