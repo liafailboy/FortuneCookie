@@ -20,8 +20,6 @@ public class MyPrefTest {
 		assertEquals(str,"Eriko Sasaki");
 	}
 	
-<<<<<<< HEAD
-=======
 	@Test
 	public void testAddPerson(){
 		IPerson personA = new Person("", "", "A", 5, 5);
@@ -37,17 +35,17 @@ public class MyPrefTest {
 		IPerson personI = new Person("", "", "I", 1, 1);
 		IPerson personJ = new Person("", "", "J", 3, 2);
 		IPerson personK = new Person("", "", "K", 1, 4);
-		pref.addPerson(personA);
-		pref.addPerson(personB);
-		pref.addPerson(personC);
-		pref.addPerson(personD);
-		pref.addPerson(personE);
-		pref.addPerson(personF);
-		pref.addPerson(personG);
-		pref.addPerson(personH);
-		pref.addPerson(personI);
-		pref.addPerson(personJ);
-		pref.addPerson(personK);
+		pref.addPersonEvaluate(personA);
+		pref.addPersonEvaluate(personB);
+		pref.addPersonEvaluate(personC);
+		pref.addPersonEvaluate(personD);
+		pref.addPersonEvaluate(personE);
+		pref.addPersonEvaluate(personF);
+		pref.addPersonEvaluate(personG);
+		pref.addPersonEvaluate(personH);
+		pref.addPersonEvaluate(personI);
+		pref.addPersonEvaluate(personJ);
+		pref.addPersonEvaluate(personK);
 		IPerson[] expected = new IPerson[10];
 		expected[0] = personA;
 		expected[1] = personE;
@@ -59,10 +57,6 @@ public class MyPrefTest {
 		expected[7] = personC;
 		expected[8] = personH;
 		expected[9] = personI;
-		for(int i=0; i < 10; i++){
-		System.out.println(pref.getArrayOfPerson()[i].getUserName());
-		}
-		assertArrayEquals(expected, pref.getArrayOfPerson());
+		assertArrayEquals(expected, pref.getArrayOfPersonEvaluated());
 	}
->>>>>>> cd1334b3c018384264a30d8f6bbe7a71e2bd3d3a
 }
