@@ -1,4 +1,12 @@
-import org.junit.Before;
+package com.liafailboy.fortunecookieandroid;
+
+import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
+import java.util.List;
 
 
 public class Connector implements IConnector {
@@ -8,12 +16,11 @@ public class Connector implements IConnector {
 	
 	@Override	
 	public boolean setNewUserToServer(MyPref pref) {
-		ParseQuery<ParseObject> query = ParseQuery.getQuery("PersonalData");
-		query.whereEqualTo("myUserId", pref.getMyUserId());
-		query.findInBackground(new FindCallback<ParseObject>() {
+		ParseQuery<ParseObject> queryForID = ParseQuery.getQuery("PersonalData");
+        queryForID.whereEqualTo("myUserId", pref.getMyUserId());
+        queryForID.findInBackground(new FindCallback<ParseObject>() {
 		    public void done(List<ParseObject> scoreList, ParseException e) {
 		        if (e == null) {
-		        	//isValid = false;
 		        } else {
 		            isValid = true;
 		        }
@@ -21,10 +28,10 @@ public class Connector implements IConnector {
 		});
 		if (!isValid) {
 			return isValid;
-		}else {		
-		ParseQuery<ParseObject> query = ParseQuery.getQuery("PersonalData");
-		query.whereEqualTo("myUserEmail", pref.getMyEmail());
-		query.findInBackground(new FindCallback<ParseObject>() {
+		} else {
+		    ParseQuery<ParseObject> queryForEmail = ParseQuery.getQuery("PersonalData");
+            queryForEmail.whereEqualTo("myUserEmail", pref.getMyEmail());
+            queryForEmail.findInBackground(new FindCallback<ParseObject>() {
 		    public void done(List<ParseObject> scoreList, ParseException e) {
 		        if (e == null) {
 		        	isValid = false;
@@ -70,9 +77,9 @@ public class Connector implements IConnector {
 	@Override
 	public boolean isValidUserNameAndPass(String userID, String pass) {
 		
-		ParseQuery<ParseObject> query = ParseQuery.getQuery("PersonalData");
-		query.whereEqualTo("myUserId", pref.getMyUserId());
-		query.findInBackground(new FindCallback<ParseObject>() {
+		ParseQuery<ParseObject> queryForID = ParseQuery.getQuery("PersonalData");
+        queryForID.whereEqualTo("myUserId", pref.getMyUserId());
+        queryForID.findInBackground(new FindCallback<ParseObject>() {
 		    public void done(List<ParseObject> scoreList, ParseException e) {
 		        if (e == null) {
 		        } else {
@@ -82,10 +89,10 @@ public class Connector implements IConnector {
 		});
 		if (!isValid) {
 			return isValid;
-		}else {		
-		ParseQuery<ParseObject> query = ParseQuery.getQuery("PersonalData");
-		query.whereEqualTo("myUserEmail", pref.getMyEmail());
-		query.findInBackground(new FindCallback<ParseObject>() {
+		} else {
+		    ParseQuery<ParseObject> queryForEmail = ParseQuery.getQuery("PersonalData");
+            queryForEmail.whereEqualTo("myUserEmail", pref.getMyEmail());
+            queryForEmail.findInBackground(new FindCallback<ParseObject>() {
 		    public void done(List<ParseObject> scoreList, ParseException e) {
 		        if (e == null) {
 		        	isValid = false;
@@ -144,7 +151,7 @@ public class Connector implements IConnector {
 
 	@Override
 	public String getUserNameFromServer() {
-		String myName
+		String myName;
 		isValid = false;
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("PersonalData");
 		query.getInBackground(objectId, new GetCallback<ParseObject>() {
@@ -187,5 +194,6 @@ public class Connector implements IConnector {
 		        }
 		    }
 		});
+        return isValid;
 	}
 }
