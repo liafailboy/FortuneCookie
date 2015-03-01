@@ -12,6 +12,8 @@ public interface IPerson {
 	 */
 	int getPersonLevel();
 	
+	int getMyUserLevel();
+	
 	void setMyUserLevel(int myLevel);
 	
 	void setPersonUserLevel(int personLevel);

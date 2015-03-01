@@ -40,6 +40,11 @@ public class Person implements IPerson {
 		return myUserLevel + personUserLevel * 2;
 	}
 	@Override
+	public int getMyUserLevel(){
+		return myUserLevel;
+	}
+	
+	@Override
 	public void setMyUserLevel(int myLevel) {
 		myUserLevel = myLevel;
 	}
