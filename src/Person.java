@@ -6,6 +6,8 @@ public class Person implements IPerson {
 	String userName;
 	int myUserLevel;
 	int personUserLevel;
+
+	ArrayList<String> arrayList = new ArrayList<String>();
 	
 	// Constructor for the class. Initialize variables here.
 	public Person(String userID, String userEmail, String userName, int myUserLevel, int personUserLevel) {
