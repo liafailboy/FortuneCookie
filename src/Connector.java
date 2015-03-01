@@ -67,13 +67,6 @@ public class Connector implements IConnector {
 		return true;
 	}
 
-	/**
-	 * return whether the ID and pass are valid or not
-	 * @param userID ID entered by user
-	 * @param pass pass entered by user
-	 * @throws IllegalArgumentException if userID or pass is null
-	 * @return whether the user entered correct userID
-	 */
 	@Override
 	public boolean isValidUserNameAndPass(String userID, String pass) {
 		
@@ -107,7 +100,22 @@ public class Connector implements IConnector {
 
 	@Override
 	public String getUserIDFromServer() {
-		return null;
+		isValid = false;
+		ParseQuery<ParseObject> query = ParseQuery.getQuery("PersonalData");
+		query.getInBackground(objectId, new GetCallback<ParseObject>() {
+		  public void done(ParseObject object, ParseException e) {
+		    if (e == null) {
+		    	isValid = true;
+		    } else {
+		    	isValid = false;
+		    }
+		  }
+		});
+		if (isValid) {
+		return myUserID = object.getString("myUserId");
+		} else {
+			return "invalid userID";
+		}
 	}
 
 	@Override
