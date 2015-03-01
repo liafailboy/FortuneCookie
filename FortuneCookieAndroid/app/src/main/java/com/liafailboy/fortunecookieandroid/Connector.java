@@ -15,7 +15,12 @@ public class Connector implements IConnector {
 	private boolean isValid = false;
 	
 	@Override	
-	public boolean setNewUserToServer(MyPref pref) {
+	public boolean setNewUserToServer(MyPref preference) {
+
+        // set the final variable to use argument in the inner class
+        final MyPref pref = preference;
+
+        // Retrieve data as an query of the object
 		ParseQuery<ParseObject> queryForID = ParseQuery.getQuery("PersonalData");
         queryForID.whereEqualTo("myUserId", pref.getMyUserId());
         queryForID.findInBackground(new FindCallback<ParseObject>() {
@@ -26,6 +31,8 @@ public class Connector implements IConnector {
 		        }
 		    }
 		});
+
+        // If there is exsiting userID on the server, return false
 		if (!isValid) {
 			return isValid;
 		} else {
@@ -36,6 +43,7 @@ public class Connector implements IConnector {
 		        if (e == null) {
 		        	isValid = false;
 		        } else {
+                    // Create object and add the data on the server
 		        	ParseObject personalData = new ParseObject("PersonalData");
 		        	personalData.put("myName", pref.getMyName());
 		        	personalData.put("myUserId", pref.getMyUserId());
@@ -55,7 +63,12 @@ public class Connector implements IConnector {
 	}
 	
 	@Override
-	public boolean updateMyInfoOnServer(MyPref pref) {
+	public boolean updateMyInfoOnServer(MyPref preference) {
+
+        // set the final variable to use argument in the inner class
+        final MyPref pref = preference;
+
+        // Retrieve data as an query of the object
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("PersonalData");
 		query.getInBackground(objectId, new GetCallback<ParseObject>() {
 		  public void done(ParseObject personalData, ParseException e) {
@@ -75,8 +88,17 @@ public class Connector implements IConnector {
 	}
 
 	@Override
-	public boolean isValidUserNameAndPass(String userID, String pass) {
-		
+	public boolean isValidUserNameAndPass(String userID, String pass, MyPref preference) {
+
+        // throw the exception if the argument was null
+        if (userID == null || pass == null || preference == null) {
+            throw new IllegalArgumentException("userId, pass, or preference is null");
+        }
+
+        // set the final variable to use argument in the inner class
+        final MyPref pref = preference;
+
+        // Retrieve data as an query of the object
 		ParseQuery<ParseObject> queryForID = ParseQuery.getQuery("PersonalData");
         queryForID.whereEqualTo("myUserId", pref.getMyUserId());
         queryForID.findInBackground(new FindCallback<ParseObject>() {
@@ -107,80 +129,79 @@ public class Connector implements IConnector {
 
 	@Override
 	public String getUserIDFromServer() {
-		String myUserID;
+
+        // set the final variable to use argument in the inner class
+        final String[] myUserID = new String[1];
+
 		isValid = false;
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("PersonalData");
 		query.getInBackground(objectId, new GetCallback<ParseObject>() {
 		  public void done(ParseObject object, ParseException e) {
 		    if (e == null) {
 		    	isValid = true;
-		    	myUserID = object.getString("myUserId");
+		    	myUserID[0] = object.getString("myUserId");
 		    } else {
 		    	isValid = false;
 		    }
 		  }
 		});
 		if (isValid) {
-		return myUserID;
+		    return myUserID[0];
 		} else {
-			return "invalid userID or password";
+			return "Invalid userID or password";
 		}
 	}
 
 	@Override
 	public String getUserEmailFromServer() {
-		String myUserEmail;
+
+        // set the final variable to use argument in the inner class
+        final String[] myUserEmail = new String[1];
+
 		isValid = false;
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("PersonalData");
 		query.getInBackground(objectId, new GetCallback<ParseObject>() {
 		  public void done(ParseObject object, ParseException e) {
 		    if (e == null) {
 		    	isValid = true;
-		    	myUserEmail = object.getString("myUserEmail");
+		    	myUserEmail[0] = object.getString("myUserEmail");
 		    } else {
 		    	isValid = false;
 		    }
 		  }
 		});
 		if (isValid) {
-		return myUserEmail;
+		    return myUserEmail[0];
 		} else {
-			return "invalid userID or password";
+			return "Invalid userID or password";
 		}
 	}
 
 	@Override
 	public String getUserNameFromServer() {
-		String myName;
+
+        // set the final variable to use argument in the inner class
+        final String[] myName = new String[1];
+
 		isValid = false;
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("PersonalData");
 		query.getInBackground(objectId, new GetCallback<ParseObject>() {
 		  public void done(ParseObject object, ParseException e) {
 		    if (e == null) {
 		    	isValid = true;
-		    	myName = object.getString("myName");
+		    	myName[0] = object.getString("myName");
 		    } else {
 		    	isValid = false;
 		    }
 		  }
 		});
 		if (isValid) {
-		return myName;
+		    return myName[0];
 		} else {
-			return "invalid userID or password";
+			return "Invalid userID or password";
 		}
-		return null;
 	}
-	
-	
-	/**
-	 * There is a lot of things to do in this method
-	 * 1. Search the user email on the server
-	 * 2. Get the rank of each people by me, and the rank of the user from them
-	 * 3. Create Person class instance for every people
-	 * 4. add all instance using addPersonEvaluate(Person person)
-	 * @return whether the array was refreshed successfully
-	 */
+
 	@Override
 	public boolean refreshArrayOfPeople(MyPref pref) {
 		isValid = false;
