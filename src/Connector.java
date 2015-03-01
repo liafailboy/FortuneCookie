@@ -162,7 +162,6 @@ public class Connector implements IConnector {
 		} else {
 			return "invalid userID or password";
 		}
-		return null;
 	}
 	
 	
