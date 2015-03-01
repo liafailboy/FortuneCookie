@@ -100,40 +100,93 @@ public class Connector implements IConnector {
 
 	@Override
 	public String getUserIDFromServer() {
+		String myUserID;
 		isValid = false;
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("PersonalData");
 		query.getInBackground(objectId, new GetCallback<ParseObject>() {
 		  public void done(ParseObject object, ParseException e) {
 		    if (e == null) {
 		    	isValid = true;
+		    	myUserID = object.getString("myUserId");
 		    } else {
 		    	isValid = false;
 		    }
 		  }
 		});
 		if (isValid) {
-		return myUserID = object.getString("myUserId");
+		return myUserID;
 		} else {
-			return "invalid userID";
+			return "invalid userID or password";
 		}
 	}
 
 	@Override
 	public String getUserEmailFromServer() {
-		// TODO Auto-generated method stub
-		return null;
+		String myUserEmail;
+		isValid = false;
+		ParseQuery<ParseObject> query = ParseQuery.getQuery("PersonalData");
+		query.getInBackground(objectId, new GetCallback<ParseObject>() {
+		  public void done(ParseObject object, ParseException e) {
+		    if (e == null) {
+		    	isValid = true;
+		    	myUserEmail = object.getString("myUserEmail");
+		    } else {
+		    	isValid = false;
+		    }
+		  }
+		});
+		if (isValid) {
+		return myUserEmail;
+		} else {
+			return "invalid userID or password";
+		}
 	}
 
 	@Override
 	public String getUserNameFromServer() {
-		// TODO Auto-generated method stub
+		String myName
+		isValid = false;
+		ParseQuery<ParseObject> query = ParseQuery.getQuery("PersonalData");
+		query.getInBackground(objectId, new GetCallback<ParseObject>() {
+		  public void done(ParseObject object, ParseException e) {
+		    if (e == null) {
+		    	isValid = true;
+		    	myName = object.getString("myName");
+		    } else {
+		    	isValid = false;
+		    }
+		  }
+		});
+		if (isValid) {
+		return myName;
+		} else {
+			return "invalid userID or password";
+		}
 		return null;
 	}
-
+	
+	
+	/**
+	 * There is a lot of things to do in this method
+	 * 1. Search the user email on the server
+	 * 2. Get the rank of each people by me, and the rank of the user from them
+	 * 3. Create Person class instance for every people
+	 * 4. add all instance using addPersonEvaluate(Person person)
+	 * @return whether the array was refreshed successfully
+	 */
 	@Override
-	public boolean refreshArrayOfPeople() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean refreshArrayOfPeople(MyPref pref) {
+		isValid = false;
+		ParseQuery<ParseObject> query = ParseQuery.getQuery("PersonalData");
+		query.whereEqualTo("myUserEmail", pref.getMyEmail());
+		query.findInBackground(new FindCallback<ParseObject>() {
+		    public void done(List<ParseObject> scoreList, ParseException e) {
+		        if (e == null) {
+		        	isValid = true;
+		        } else {
+		        	isValid = false;
+		        }
+		    }
+		});
 	}
-
 }

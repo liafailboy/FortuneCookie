@@ -52,5 +52,5 @@ public interface IConnector {
 	 * 4. add all instance using addPersonEvaluate(Person person)
 	 * @return whether the array was refreshed successfully
 	 */
-	boolean refreshArrayOfPeople();
+	boolean refreshArrayOfPeople(MyPref pref);
 }
