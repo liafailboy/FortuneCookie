@@ -84,29 +84,13 @@ public class IConnectorTest {
 
     @Test
     public void testGetUserEmailFromServer() throws Exception {
-        assertEquals("Invalid userID or password", con.getUserEmailFromServer())
-        //save personal data to server
-        ParseObject personalData = new ParseObject("PersonalData");
-        personalData.put("myName", "Shotaro Watanabe");
-        personalData.put("myUserId", "liafailboy");
-        personalData.put("myUserEmail", "shotaro.w@gatech.edu");
-        personalData.saveInBackground();
-        objectId = personalData.getObjectId();
-        //test
+        con.setNewUserToServer(pref);
         assertEquals("shotaro.w@gatech.edu", con.getUserEmailFromServer());
     }
 
     @Test
     public void testGetUserNameFromServer() throws Exception {
-        assertEquals("Invalid userID or password", con.getUserNameFromServer())
-        //save personal data to server
-        ParseObject personalData = new ParseObject("PersonalData");
-        personalData.put("myName", "Shotaro Watanabe");
-        personalData.put("myUserId", "liafailboy");
-        personalData.put("myUserEmail", "shotaro.w@gatech.edu");
-        personalData.saveInBackground();
-        objectId = personalData.getObjectId();
-        //test
+        con.setNewUserToServer(pref);
         assertEquals("Shotaro Watanabe", con.getUserNameFromServer());
     }
 

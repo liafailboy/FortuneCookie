@@ -161,7 +161,9 @@ public class Connector implements IConnector {
 
 	@Override
 	public String getUserEmailFromServer() {
-
+        if (objectId.equals("")) {
+            throw new NoSuchElementException("objectId is not yet set");
+        }
 
         // set the final variable to use argument in the inner class
         final String[] myUserEmail = new String[1];
@@ -187,7 +189,9 @@ public class Connector implements IConnector {
 
 	@Override
 	public String getUserNameFromServer() {
-
+        if (objectId.equals("")) {
+            throw new NoSuchElementException("objectId is not yet set");
+        }
         // set the final variable to use argument in the inner class
         final String[] myName = new String[1];
 
@@ -230,7 +234,14 @@ public class Connector implements IConnector {
           String matchedPersonId = scoreList.get(i).getString("myUserId");
           String matchedPersonEmail = scoreList.get(i).getString("myUserEmail");
           String matchedPersonName = scoreList.get(i).getString("myName");
-
+            for (int n = 0; n < 10; n++){
+              if (scoreList.get(i).getString("person" + n + "Email").equals(pref.getMyEmail())) {
+                  int matchedPersonUserLevel = scoreList.get(i).getString(Integer.parseInt("myPerson" + i + "Level"));
+              } else{
+                     throw new NoSuchElementException("error when refreshing");
+                  }
+              }
+            }
          if (pref.arrayOfPersonSelected[i].getUserEmail().equals(matchedPersonEmail)) {
                 int matchedPersonLevel = pref.arrayOfPersonSelected[i].getMyUserLevel();
             } else {
