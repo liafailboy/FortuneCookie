@@ -281,7 +281,7 @@ public class Connector implements IConnector {
         for (int i = 0; i < 10; i++) {
             queryForSelectedPerson.whereEqualTo("myUserEmail", pref.getArrayOfPersonSelected()[i].getUserEmail());
 //            filter out persons already added with matchedPerson
-            queryForSelectedPerson.whereNotContainedIn("person" + i + "Email", pref.getMyEmail());
+            queryForSelectedPerson.whereNotEqualTo("person" + i + "Email", pref.getMyEmail());
             queryForSelectedPerson.getFirstInBackground(new GetCallback<ParseObject>() {
                 public void done(ParseObject object, ParseException e) {
                     if (object == null) {
