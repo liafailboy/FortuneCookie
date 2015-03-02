@@ -6,6 +6,7 @@ public interface IConnector {
 	 * Check the possibility of duplicate userID, pass, and userEmail
 	 * and if you can add, add the values to server and return true
 	 * but if you cannot, return false
+     *
 	 * @param pref preference of the user entered at the first time
 	 * @return whether server can accept the userID, pass, and userEmail entered by the user
 	 */
