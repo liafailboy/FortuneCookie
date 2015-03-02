@@ -6,27 +6,27 @@ public interface IConnector {
 	 * Check the possibility of duplicate userID, pass, and userEmail
 	 * and if you can add, add the values to server and return true
 	 * but if you cannot, return false
-     *
-	 * @param pref preference of the user entered at the first time
+	 * @param preference preference of the user entered at the first time
 	 * @return whether server can accept the userID, pass, and userEmail entered by the user
 	 */
-	boolean setNewUserToServer(MyPref pref);
+	boolean setNewUserToServer(MyPref preference);
 	
 	/**
 	 * Update the information on the server with the user preference
-	 * @param pref preference of the user entered
+	 * @param preference preference of the user entered
 	 * @return whether server successfully updated
 	 */
-	boolean updateMyInfoOnServer(MyPref pref);
+	boolean updateMyInfoOnServer(MyPref preference);
 	
 	/**
 	 * return whether the ID and pass are valid or not
 	 * @param userID ID entered by user
 	 * @param pass pass entered by user
+     * @param preference preference of the user entered
 	 * @throws IllegalArgumentException if userID or pass is null
 	 * @return whether the user entered correct userID
 	 */
-	boolean isValidUserNameAndPass(String userID, String pass);
+	boolean isValidUserNameAndPass(String userID, String pass, MyPref preference);
 	
 	/**
 	 * return userID of the user if user entered valid ID and pass
@@ -52,7 +52,8 @@ public interface IConnector {
 	 * 2. Get the rank of each people by me, and the rank of the user from them
 	 * 3. Create Person class instance for every people
 	 * 4. add all instance using addPersonEvaluate(Person person)
+     * @param preference preference of the user entered at the first time
 	 * @return whether the array was refreshed successfully
 	 */
-	boolean refreshArrayOfPeople(MyPref pref);
+	boolean refreshArrayOfPeople(MyPref preference);
 }
