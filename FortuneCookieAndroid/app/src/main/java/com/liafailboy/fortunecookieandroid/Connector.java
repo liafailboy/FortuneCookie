@@ -108,22 +108,25 @@ public class Connector implements IConnector {
         queryForID.findInBackground(new FindCallback<ParseObject>() {
 		    public void done(List<ParseObject> scoreList, ParseException e) {
 		        if (e == null) {
+                //server userId matched the entered userId
+                isValid = true;
 		        } else {
-		            isValid = true;
+                //server userId did not match the entered userId
 		        }
 		    }
 		});
 		if (!isValid) {
 			return isValid;
 		} else {
-		    ParseQuery<ParseObject> queryForEmail = ParseQuery.getQuery("PersonalData");
-            queryForEmail.whereEqualTo("myUserEmail", pref.getMyEmail());
-            queryForEmail.findInBackground(new FindCallback<ParseObject>() {
+		    ParseQuery<ParseObject> queryForPass = ParseQuery.getQuery("PersonalData");
+            queryForPass.whereEqualTo("myPass", pass);
+            queryForPass.findInBackground(new FindCallback<ParseObject>() {
 		    public void done(List<ParseObject> scoreList, ParseException e) {
 		        if (e == null) {
-		        	isValid = false;
+                //server email matched the entered email
+		        	isValid = true;
 		        } else {
-		            isValid = true;
+                //server email did not match the entered email
 		        }
 		    }
 		});
@@ -217,48 +220,90 @@ public class Connector implements IConnector {
 	@Override
 	public boolean refreshArrayOfPeople(MyPref pref) {
 		isValid = false;
+
+        // set final variables to use argument in the inner class
+        final int matchedPersonUserLevel = 0;
+        final int myUserLevel = 0;
+        final MyPref pref;
+
+        //create list of people who entered the user's email
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("PersonalData");
 		for (int i = 0; i < 10; i++) {
             query.whereEqualTo("person" + i + "Email", pref.getMyEmail());
-        } query.findInBackground(new FindCallback<ParseObject>() {
-		  public void done(List<ParseObject> scoreList, ParseException e) {
-		    if (e == null) {
-		        //there was a match with email and server data
-                isValid = true;
-		    } else {
-                //there was no match with email and server
-		        isValid = true;
-		    }
+        }
 
-          for (int i = 0; i < scoreList.size(); i++) {
-          String matchedPersonId = scoreList.get(i).getString("myUserId");
-          String matchedPersonEmail = scoreList.get(i).getString("myUserEmail");
-          String matchedPersonName = scoreList.get(i).getString("myName");
-            for (int n = 0; n < 10; n++){
-              if (scoreList.get(i).getString("person" + n + "Email").equals(pref.getMyEmail())) {
-                  int matchedPersonUserLevel = scoreList.get(i).getString(Integer.parseInt("myPerson" + i + "Level"));
-              } else{
-                     throw new NoSuchElementException("error when refreshing");
-                  }
-              }
+        query.findInBackground(new FindCallback<ParseObject>() {
+		    public void done(List<ParseObject> scoreList, ParseException e) {
+                if (e == null) {
+                    //there was a match with email and server data
+                    isValid = true;
+                } else {
+                    //there was no match with email and server
+                    isValid = true;
+                }
+
+                for (int i = 0; i < scoreList.size(); i++) {
+
+                    //retrieve necessary data from scoreList to create new Person instance
+                    String matchedPersonId = scoreList.get(i).getString("myUserId");
+                    String matchedPersonEmail = scoreList.get(i).getString("myUserEmail");
+                    String matchedPersonName = scoreList.get(i).getString("myName");
+
+                    for (int n = 0; n < 10; n++) {
+                        if (scoreList.get(i).getString("person" + n + "Email").equals(pref.getMyEmail())) {
+                            int matchedPersonUserLevel = scoreList.get(i).getString(Integer.parseInt("myPerson" + n + "Level"));
+                            isValid = true
+                        } else {
+                            throw new NoSuchElementException("error occurred when refreshing");
+                        }
+                    }
+
+                    if (pref.arrayOfPersonSelected[i].getUserEmail().equals(matchedPersonEmail)) {
+                        int myUserLevel = pref.arrayOfPersonSelected[i].getMyUserLevel();
+                    } else {
+                        int myUserLevel = 0;
+                    }
+
+                    // create new Person instance using scoreList data
+                    IPerson matchedPerson = new Person(matchedPersonId, matchedPersonEmail, matchedPersonName, myUserLevel, matchedPersonUserLevel);
+
+                    //add matched persons to array
+                    pref.addPersonEvaluate(matchedPerson);
+                }
             }
-         if (pref.arrayOfPersonSelected[i].getUserEmail().equals(matchedPersonEmail)) {
-                int matchedPersonLevel = pref.arrayOfPersonSelected[i].getMyUserLevel();
-            } else {
-                int matchedPersonlevel = 0;
-            }
+        });
 
+        //next, addPerson from the user's selected list of people.
+        //the other users who added the user on their list have already been added.
+        //so, only consider the ones that are only Selected by the user.
+        final int selectedMyUserLevel;
+        ParseQuery<ParseObject> queryForSelectedPerson = ParseQuery.getQuery("PersonalData");
+        for (int i = 0; i < 10; i++) {
+            queryForSelectedPerson.whereEqualTo("myUserEmail", pref.getArrayOfPersonSelected()[i].getUserEmail());
+//            filter out persons already added with matchedPerson
+            queryForSelectedPerson.whereNotContainedIn("person" + i + "Email", pref.getMyEmail());
+            queryForSelectedPerson.getFirstInBackground(new GetCallback<ParseObject>() {
+                public void done(ParseObject object, ParseException e) {
+                    if (object == null) {
+                        // request failed
+                    } else {
+                        //successfully retrieved object
+                        isValid = true;
+                    }
 
-          IPerson matchedPerson = new Person(matchedPersonId, matchedPersonEmail, matchedPersonName,)
+                //retrieve necessary info from object
+                String selectedPersonId = object.getString("myUserId");
+                String selectedPersonEmail = object.getString("myUserEmail");
+                String selectedPersonName = object.getString("myName");
+                selectedMyUserLevel = pref.getArrayOfPersonSelected()[i].getMyUserLevel();
 
-          }
+                //create new Person instance using above data
+                IPerson selectedPerson = new Person (selectedPersonId, selectedPersonEmail, selectedPersonName, selectedMyUserLevel, 0);
 
-
-              String objectId = scoreList.getObjectId();
-              scoreList.getString("User_Name"));
-              scoreList.getString("User_Email"));
-          }
-		});
+                pref.addPersonEvaluate(selectedPerson);
+                }
+            });
+        }
         return isValid;
 	}
 }
