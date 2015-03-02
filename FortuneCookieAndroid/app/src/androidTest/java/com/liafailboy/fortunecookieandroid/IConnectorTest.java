@@ -13,12 +13,7 @@ public class IConnectorTest {
 
     @Before
     public void setUp() throws Exception {
-        pref = new MyPref("Shotaro Watanabe", "liafailboy", "shotaro.w@gatech.edu");
-
-    }
-
-    @Test
-    public void testSetNewUserToServer() throws Exception {
+        pref = new MyPref;
         pref.setMyEmail("shotaro.w@gatech.edu");
         pref.setMyName("Shotaro Watanabe");
         pref.setMyUserId("liafailboy");
@@ -46,32 +41,73 @@ public class IConnectorTest {
         pref.addPersonEvaluate(personI);
         pref.addPersonEvaluate(personJ);
         pref.addPersonEvaluate(personK);
+    }
+
+    @Test
+    public void testSetNewUserToServer() throws Exception {
         assertTrue(con.setNewUserToServer(pref));
+        assertFalse(con.setNewUserToServer(pref));
+        pref.setMyEmail("liafailboy@gmail.com");
+        assertFalse(con.setNewUserToServer(pref));
+        pref.setMyEmail("shotaro.w@gatech.edu");
+        pref.setMyUserId("liafailbay");
+        assertFalse(con.setNewUserToServer(pref));
     }
 
     @Test
     public void testUpdateMyInfoOnServer() throws Exception {
-
+        con.setNewUserToServer(pref);
+        pref.setMyUserId("tommy03b");
+        pref.setMyEmail("tiamo_eris@yahoo.co.jp");
+        pref.setMyName("Eriko Sasaki");
+        Person personL = new Person("", "", "L", 5, 4);
+        pref.addPersonSelect(personL);
+        assertTrue(con.updateMyInfoOnServer(pref));
+        System.out.println(pref.getMyUserId());
+        System.out.println(pref.getMyEmail());
+        System.out.println(pref.getMyName());
+        System.out.println(pref.getArrayOfPersonSelected()[1]);
     }
 
     @Test
     public void testIsValidUserNameAndPass() throws Exception {
-
+        assertFalse(con.isValidUserNameAndPass("tommy03b", "shotaro.w@gatech.edu", pref));
+        assertFalse(con.isValidUserNameAndPass("liafailboy", "tiamo_eris@yahoo.co.jp", pref));
+        assertTrue(con.isValidUserNameAndPass("tommy03b", "tiamo_eris@yahoo.co.jp", pref));
     }
 
     @Test
     public void testGetUserIDFromServer() throws Exception {
-
+        con.setNewUserToServer(pref);
+        assertEquals("liafailboy",con.getUserIDFromServer());
     }
 
     @Test
     public void testGetUserEmailFromServer() throws Exception {
-
+        assertEquals("Invalid userID or password", con.getUserEmailFromServer())
+        //save personal data to server
+        ParseObject personalData = new ParseObject("PersonalData");
+        personalData.put("myName", "Shotaro Watanabe");
+        personalData.put("myUserId", "liafailboy");
+        personalData.put("myUserEmail", "shotaro.w@gatech.edu");
+        personalData.saveInBackground();
+        objectId = personalData.getObjectId();
+        //test
+        assertEquals("shotaro.w@gatech.edu", con.getUserEmailFromServer());
     }
 
     @Test
     public void testGetUserNameFromServer() throws Exception {
-
+        assertEquals("Invalid userID or password", con.getUserNameFromServer())
+        //save personal data to server
+        ParseObject personalData = new ParseObject("PersonalData");
+        personalData.put("myName", "Shotaro Watanabe");
+        personalData.put("myUserId", "liafailboy");
+        personalData.put("myUserEmail", "shotaro.w@gatech.edu");
+        personalData.saveInBackground();
+        objectId = personalData.getObjectId();
+        //test
+        assertEquals("Shotaro Watanabe", con.getUserNameFromServer());
     }
 
     @Test

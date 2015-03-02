@@ -7,6 +7,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 
 public class Connector implements IConnector {
@@ -26,8 +27,10 @@ public class Connector implements IConnector {
         queryForID.findInBackground(new FindCallback<ParseObject>() {
 		    public void done(List<ParseObject> scoreList, ParseException e) {
 		        if (e == null) {
+//                    this userId is already used by another user.
 		        } else {
-		            isValid = true;
+//		            this userId can be used.
+                    isValid = true;
 		        }
 		    }
 		});
@@ -41,6 +44,7 @@ public class Connector implements IConnector {
             queryForEmail.findInBackground(new FindCallback<ParseObject>() {
 		    public void done(List<ParseObject> scoreList, ParseException e) {
 		        if (e == null) {
+//                    there is already another user using this eMail.
 		        	isValid = false;
 		        } else {
                     // Create object and add the data on the server
@@ -129,6 +133,9 @@ public class Connector implements IConnector {
 
 	@Override
 	public String getUserIDFromServer() {
+        if (objectId.equals("")) {
+            throw new NoSuchElementException("objectId is not yet set");
+        }
 
         // set the final variable to use argument in the inner class
         final String[] myUserID = new String[1];
@@ -154,6 +161,7 @@ public class Connector implements IConnector {
 
 	@Override
 	public String getUserEmailFromServer() {
+
 
         // set the final variable to use argument in the inner class
         final String[] myUserEmail = new String[1];
@@ -206,15 +214,39 @@ public class Connector implements IConnector {
 	public boolean refreshArrayOfPeople(MyPref pref) {
 		isValid = false;
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("PersonalData");
-		query.whereEqualTo("myUserEmail", pref.getMyEmail());
-		query.findInBackground(new FindCallback<ParseObject>() {
-		    public void done(List<ParseObject> scoreList, ParseException e) {
-		        if (e == null) {
-		        	isValid = true;
-		        } else {
-		        	isValid = false;
-		        }
+		for (int i = 0; i < 10; i++) {
+            query.whereEqualTo("person" + i + "Email", pref.getMyEmail());
+        } query.findInBackground(new FindCallback<ParseObject>() {
+		  public void done(List<ParseObject> scoreList, ParseException e) {
+		    if (e == null) {
+		        //there was a match with email and server data
+                isValid = true;
+		    } else {
+                //there was no match with email and server
+		        isValid = true;
 		    }
+
+          for (int i = 0; i < scoreList.size(); i++) {
+          String matchedPersonId = scoreList.get(i).getString("myUserId");
+          String matchedPersonEmail = scoreList.get(i).getString("myUserEmail");
+          String matchedPersonName = scoreList.get(i).getString("myName");
+
+         if (pref.arrayOfPersonSelected[i].getUserEmail().equals(matchedPersonEmail)) {
+                int matchedPersonLevel = pref.arrayOfPersonSelected[i].getMyUserLevel();
+            } else {
+                int matchedPersonlevel = 0;
+            }
+
+
+          IPerson matchedPerson = new Person(matchedPersonId, matchedPersonEmail, matchedPersonName,)
+
+          }
+
+
+              String objectId = scoreList.getObjectId();
+              scoreList.getString("User_Name"));
+              scoreList.getString("User_Email"));
+          }
 		});
         return isValid;
 	}
