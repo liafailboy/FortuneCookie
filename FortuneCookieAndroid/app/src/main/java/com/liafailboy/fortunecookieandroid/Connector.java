@@ -115,7 +115,9 @@ public class Connector implements IConnector {
 		});
 
         // return false if userID is not valid
-        if (!isValid) return isValid;
+        if (!isValid) {
+            return isValid;
+        }
 
         ParseQuery<ParseObject> queryForPass = ParseQuery.getQuery("PersonalData");
         queryForPass.whereEqualTo("myPass", pass);

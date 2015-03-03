@@ -19,6 +19,7 @@ public class IConnectorTest {
         con = new Connector();
 
         // Create instance of Person
+<<<<<<< HEAD
         IPerson personA = new Person("", "", "A", 5, 0);
         IPerson personB = new Person("", "", "B", 1, 0);
         IPerson personC = new Person("", "", "C", 2, 0);
@@ -43,6 +44,34 @@ public class IConnectorTest {
         pref.addPersonSelect(personI);
         pref.addPersonSelect(personJ);
         pref.addPersonSelect(personK);
+=======
+        // 15, 7, 4, 9, 13, 2, 5, 3, 3, 7, 9
+        // A, E, D, K, B, J, G, C, H, I
+        IPerson personA = new Person("", "", "A", 5, 5);
+        IPerson personB = new Person("", "", "B", 1, 3);
+        IPerson personC = new Person("", "", "C", 2, 1);
+        IPerson personD = new Person("", "", "D", 3, 3);
+        IPerson personE = new Person("", "", "E", 3, 5);
+        IPerson personF = new Person("", "", "F", 0, 1);
+        IPerson personG = new Person("", "", "G", 1, 2);
+        IPerson personH = new Person("", "", "H", 3, 0);
+        IPerson personI = new Person("", "", "I", 1, 1);
+        IPerson personJ = new Person("", "", "J", 3, 2);
+        IPerson personK = new Person("", "", "K", 1, 4);
+
+        // Add instance to the array
+        pref.addPersonEvaluate(personA);
+        pref.addPersonEvaluate(personB);
+        pref.addPersonEvaluate(personC);
+        pref.addPersonEvaluate(personD);
+        pref.addPersonEvaluate(personE);
+        pref.addPersonEvaluate(personF);
+        pref.addPersonEvaluate(personG);
+        pref.addPersonEvaluate(personH);
+        pref.addPersonEvaluate(personI);
+        pref.addPersonEvaluate(personJ);
+        pref.addPersonEvaluate(personK);
+>>>>>>> 5710770e1c84c425fad52e1b46287d05fe9c6603
     }
 
     @Test
@@ -73,7 +102,11 @@ public class IConnectorTest {
         pref.setMyName("Eriko Sasaki");
 
         // Add new person on the array
+<<<<<<< HEAD
         Person personL = new Person("", "", "L", 5, 0);
+=======
+        Person personL = new Person("", "", "L", 5, 4);
+>>>>>>> 5710770e1c84c425fad52e1b46287d05fe9c6603
         pref.addPersonSelect(personL);
 
         // Update info on server
@@ -87,6 +120,7 @@ public class IConnectorTest {
 
     @Test
     public void testIsValidUserNameAndPass() throws Exception {
+<<<<<<< HEAD
 
         // False will be returned with different username
         assertFalse(con.isValidUserNameAndPass("tommy03b", "shotaro.w@gatech.edu", pref));
@@ -130,6 +164,18 @@ public class IConnectorTest {
         pref.addPersonSelect(personK);
 
         con.setNewUserToServer(pref);
+=======
+
+        // False will be returned with different username
+        assertFalse(con.isValidUserNameAndPass("tommy03b", "shotaro.w@gatech.edu", pref));
+
+        // False will be returned with different email
+        assertFalse(con.isValidUserNameAndPass("liafailboy", "tiamo_eris@yahoo.co.jp", pref));
+
+        // True will be returned with valid username and email
+        assertTrue(con.isValidUserNameAndPass("tommy03b", "tiamo_eris@yahoo.co.jp", pref));
+    }
+>>>>>>> 5710770e1c84c425fad52e1b46287d05fe9c6603
 
         //create different instance of MyPref and Person with changed values
         MyPref tmpPref = new MyPref("Shotaro Watanabe", "liafailboy", "shotaro.w@gatech.edu")
