@@ -16,10 +16,11 @@ public class Connector implements IConnector {
 	private boolean isValid = false;
 	
 	@Override	
-	public boolean setNewUserToServer(MyPref preference) {
+	public boolean setNewUserToServer(MyPref preference, String pass) {
 
         // set the final variable to use argument in the inner class
         final MyPref pref = preference;
+        final String password = pass;
 
         // Retrieve data as an query of the object
 		ParseQuery<ParseObject> queryForID = ParseQuery.getQuery("PersonalData");
@@ -51,6 +52,7 @@ public class Connector implements IConnector {
 		       	personalData.put("myName", pref.getMyName());
 		        personalData.put("myUserId", pref.getMyUserId());
 		        personalData.put("myUserEmail", pref.getMyEmail());
+                personalData.put("myPass", password);
 		        for (int i = 0; i < 10; i++) {
 		        	personalData.put("person" + i + "Email", pref.getArrayOfPersonSelected()[i]);
 		        	personalData.put("myPerson" + i + "Level", pref.getArrayOfPersonSelected()[i].getMyUserLevel());
@@ -65,10 +67,11 @@ public class Connector implements IConnector {
 	}
 	
 	@Override
-	public boolean updateMyInfoOnServer(MyPref preference) {
+	public boolean updateMyInfoOnServer(MyPref preference, String pass) {
 
         // set the final variable to use argument in the inner class
         final MyPref pref = preference;
+        final String password = pass;
 
         // Retrieve data as an query of the object
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("PersonalData");
@@ -78,6 +81,7 @@ public class Connector implements IConnector {
 		      personalData.put("myName", pref.getMyName());
 		      personalData.put("myUserId", pref.getMyUserId());
 		      personalData.put("myUserEmail", pref.getMyUserId());
+              personalData.put("myPass", password);
 		      for (int i = 0; i < 10; i++) {
 	        		personalData.put("person" + i + "Email", pref.getArrayOfPersonSelected()[i]);
 	        		personalData.put("myPerson" + i + "Level", pref.getArrayOfPersonSelected()[i].getMyUserLevel());
@@ -99,6 +103,7 @@ public class Connector implements IConnector {
 
         // set the final variable to use argument in the inner class
         final MyPref pref = preference;
+        final String password = pass;
 
         // Retrieve data as an query of the object
 		ParseQuery<ParseObject> queryForID = ParseQuery.getQuery("PersonalData");
@@ -120,14 +125,14 @@ public class Connector implements IConnector {
         }
 
         ParseQuery<ParseObject> queryForPass = ParseQuery.getQuery("PersonalData");
-        queryForPass.whereEqualTo("myPass", pass);
+        queryForPass.whereEqualTo("myPass", password);
         queryForPass.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> scoreList, ParseException e) {
                 if (e == null) {
-                    //server email matched the entered email
+                    //server pass matched the entered pass
                     isValid = true;
                 } else {
-                    //server email did not match the entered email
+                    //server pass did not match the entered pass
                 }
             }
         });
@@ -235,8 +240,8 @@ public class Connector implements IConnector {
 
         // set final variables to use argument in the inner class
         final MyPref pref = preference;
-        int myUserLevel = 0;
-        int matchedPersonUserLevel = 0;
+        final int[] myUserLevel = new int[1];
+        final int[] matchedPersonUserLevel = new int[1];
 
         //create list of people who entered the user's email
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("PersonalData");
@@ -263,7 +268,7 @@ public class Connector implements IConnector {
 
                     for (int n = 0; n < 10; n++) {
                         if (scoreList.get(i).getString("person" + n + "Email").equals(pref.getMyEmail())) {
-                            int matchedPersonUserLevel = Integer.parseInt(scoreList.get(i).getString("myPerson" + n + "Level"));
+                            matchedPersonUserLevel[0] = Integer.parseInt(scoreList.get(i).getString("myPerson" + n + "Level"));
                             isValid = true;
                         } else {
                             throw new NoSuchElementException("error occurred when refreshing");
@@ -271,13 +276,13 @@ public class Connector implements IConnector {
                     }
 
                     if (pref.arrayOfPersonSelected[i].getUserEmail().equals(matchedPersonEmail)) {
-                        int myUserLevel = pref.arrayOfPersonSelected[i].getMyUserLevel();
+                        myUserLevel[0] = pref.arrayOfPersonSelected[i].getMyUserLevel();
                     } else {
-                        int myUserLevel = 0;
+                        myUserLevel[0] = 0;
                     }
 
                     // create new Person instance using scoreList data
-                    IPerson matchedPerson = new Person(matchedPersonId, matchedPersonEmail, matchedPersonName, myUserLevel, matchedPersonUserLevel);
+                    IPerson matchedPerson = new Person(matchedPersonId, matchedPersonEmail, matchedPersonName, myUserLevel[0], matchedPersonUserLevel[0]);
 
                     //add matched persons to array
                     pref.addPersonEvaluate(matchedPerson);

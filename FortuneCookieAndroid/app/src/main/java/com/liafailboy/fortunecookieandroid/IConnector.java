@@ -7,16 +7,18 @@ public interface IConnector {
 	 * and if you can add, add the values to server and return true
 	 * but if you cannot, return false
 	 * @param preference preference of the user entered at the first time
+     * @param pass pass entered by user
 	 * @return whether server can accept the userID, pass, and userEmail entered by the user
 	 */
-	boolean setNewUserToServer(MyPref preference);
+	boolean setNewUserToServer(MyPref preference, String pass);
 	
 	/**
 	 * Update the information on the server with the user preference
 	 * @param preference preference of the user entered
+     * @param pass pass entered by user
 	 * @return whether server successfully updated
 	 */
-	boolean updateMyInfoOnServer(MyPref preference);
+	boolean updateMyInfoOnServer(MyPref preference, String pass);
 	
 	/**
 	 * return whether the ID and pass are valid or not
