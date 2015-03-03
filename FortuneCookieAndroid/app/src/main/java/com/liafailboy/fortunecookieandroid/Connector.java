@@ -27,42 +27,40 @@ public class Connector implements IConnector {
         queryForID.findInBackground(new FindCallback<ParseObject>() {
 		    public void done(List<ParseObject> scoreList, ParseException e) {
 		        if (e == null) {
-//                    this userId is already used by another user.
+		            // this userId is already used by another user.
 		        } else {
-//		            this userId can be used.
+		            // this userId can be used.
                     isValid = true;
 		        }
 		    }
 		});
 
         // If there is exsiting userID on the server, return false
-		if (!isValid) {
-			return isValid;
-		} else {
-		    ParseQuery<ParseObject> queryForEmail = ParseQuery.getQuery("PersonalData");
-            queryForEmail.whereEqualTo("myUserEmail", pref.getMyEmail());
-            queryForEmail.findInBackground(new FindCallback<ParseObject>() {
+		if (!isValid) return isValid;
+
+        ParseQuery<ParseObject> queryForEmail = ParseQuery.getQuery("PersonalData");
+        queryForEmail.whereEqualTo("myUserEmail", pref.getMyEmail());
+        queryForEmail.findInBackground(new FindCallback<ParseObject>() {
 		    public void done(List<ParseObject> scoreList, ParseException e) {
-		        if (e == null) {
-//                    there is already another user using this eMail.
-		        	isValid = false;
-		        } else {
-                    // Create object and add the data on the server
-		        	ParseObject personalData = new ParseObject("PersonalData");
-		        	personalData.put("myName", pref.getMyName());
-		        	personalData.put("myUserId", pref.getMyUserId());
-		        	personalData.put("myUserEmail", pref.getMyEmail());
-		        	for (int i = 0; i < 10; i++) {
-		        		personalData.put("person" + i + "Email", pref.getArrayOfPersonSelected()[i]);
-		        		personalData.put("myPerson" + i + "Level", pref.getArrayOfPersonSelected()[i].getMyUserLevel());
-		        	}
-		        	personalData.saveInBackground();
-		        	objectId = personalData.getObjectId();
-		            isValid = true;
+		    if (e == null) {
+		        // there is already another user using this EMail.
+		        isValid = false;
+		    } else {
+		        // Create object and add the data on the server
+		        ParseObject personalData = new ParseObject("PersonalData");
+		       	personalData.put("myName", pref.getMyName());
+		        personalData.put("myUserId", pref.getMyUserId());
+		        personalData.put("myUserEmail", pref.getMyEmail());
+		        for (int i = 0; i < 10; i++) {
+		        	personalData.put("person" + i + "Email", pref.getArrayOfPersonSelected()[i]);
+		        	personalData.put("myPerson" + i + "Level", pref.getArrayOfPersonSelected()[i].getMyUserLevel());
 		        }
+		        personalData.saveInBackground();
+		        objectId = personalData.getObjectId();
+		        isValid = true;
+		    }
 		    }
 		});
-		}
 		return isValid;
 	}
 	
@@ -115,27 +113,29 @@ public class Connector implements IConnector {
 		        }
 		    }
 		});
-		if (!isValid) {
-			return isValid;
-		} else {
-		    ParseQuery<ParseObject> queryForPass = ParseQuery.getQuery("PersonalData");
-            queryForPass.whereEqualTo("myPass", pass);
-            queryForPass.findInBackground(new FindCallback<ParseObject>() {
-		    public void done(List<ParseObject> scoreList, ParseException e) {
-		        if (e == null) {
-                //server email matched the entered email
-		        	isValid = true;
-		        } else {
-                //server email did not match the entered email
-		        }
-		    }
-		});
-		}
+
+        // return false if userID is not valid
+        if (!isValid) return isValid;
+
+        ParseQuery<ParseObject> queryForPass = ParseQuery.getQuery("PersonalData");
+        queryForPass.whereEqualTo("myPass", pass);
+        queryForPass.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> scoreList, ParseException e) {
+                if (e == null) {
+                    //server email matched the entered email
+                    isValid = true;
+                } else {
+                    //server email did not match the entered email
+                }
+            }
+        });
 		return isValid;
 	}
 
 	@Override
 	public String getUserIDFromServer() {
+
+        // throw exception if there is no objectId set
         if (objectId.equals("")) {
             throw new NoSuchElementException("objectId is not yet set");
         }
@@ -144,6 +144,8 @@ public class Connector implements IConnector {
         final String[] myUserID = new String[1];
 
 		isValid = false;
+
+        // Get data with query from the server
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("PersonalData");
 		query.getInBackground(objectId, new GetCallback<ParseObject>() {
 		  public void done(ParseObject object, ParseException e) {
@@ -164,6 +166,8 @@ public class Connector implements IConnector {
 
 	@Override
 	public String getUserEmailFromServer() {
+
+        // throw exception if there is no objectId set
         if (objectId.equals("")) {
             throw new NoSuchElementException("objectId is not yet set");
         }
@@ -172,6 +176,8 @@ public class Connector implements IConnector {
         final String[] myUserEmail = new String[1];
 
 		isValid = false;
+
+        // Get data with query from the server
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("PersonalData");
 		query.getInBackground(objectId, new GetCallback<ParseObject>() {
 		  public void done(ParseObject object, ParseException e) {
@@ -192,6 +198,8 @@ public class Connector implements IConnector {
 
 	@Override
 	public String getUserNameFromServer() {
+
+        // throw exception if there is no objectId set
         if (objectId.equals("")) {
             throw new NoSuchElementException("objectId is not yet set");
         }
@@ -199,6 +207,8 @@ public class Connector implements IConnector {
         final String[] myName = new String[1];
 
 		isValid = false;
+
+        // Get data with query from the server
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("PersonalData");
 		query.getInBackground(objectId, new GetCallback<ParseObject>() {
 		  public void done(ParseObject object, ParseException e) {
@@ -218,13 +228,13 @@ public class Connector implements IConnector {
 	}
 
 	@Override
-	public boolean refreshArrayOfPeople(MyPref pref) {
+	public boolean refreshArrayOfPeople(MyPref preference) {
 		isValid = false;
 
         // set final variables to use argument in the inner class
-        final int matchedPersonUserLevel = 0;
-        final int myUserLevel = 0;
-        final MyPref pref;
+        final MyPref pref = preference;
+        int myUserLevel = 0;
+        int matchedPersonUserLevel = 0;
 
         //create list of people who entered the user's email
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("PersonalData");
@@ -251,8 +261,8 @@ public class Connector implements IConnector {
 
                     for (int n = 0; n < 10; n++) {
                         if (scoreList.get(i).getString("person" + n + "Email").equals(pref.getMyEmail())) {
-                            int matchedPersonUserLevel = scoreList.get(i).getString(Integer.parseInt("myPerson" + n + "Level"));
-                            isValid = true
+                            int matchedPersonUserLevel = Integer.parseInt(scoreList.get(i).getString("myPerson" + n + "Level"));
+                            isValid = true;
                         } else {
                             throw new NoSuchElementException("error occurred when refreshing");
                         }
@@ -276,9 +286,10 @@ public class Connector implements IConnector {
         //next, addPerson from the user's selected list of people.
         //the other users who added the user on their list have already been added.
         //so, only consider the ones that are only Selected by the user.
-        final int selectedMyUserLevel;
         ParseQuery<ParseObject> queryForSelectedPerson = ParseQuery.getQuery("PersonalData");
+        final int[] arrayOfI = new int[1];
         for (int i = 0; i < 10; i++) {
+            arrayOfI[0] = i;
             queryForSelectedPerson.whereEqualTo("myUserEmail", pref.getArrayOfPersonSelected()[i].getUserEmail());
 //            filter out persons already added with matchedPerson
             queryForSelectedPerson.whereNotEqualTo("person" + i + "Email", pref.getMyEmail());
@@ -295,7 +306,7 @@ public class Connector implements IConnector {
                 String selectedPersonId = object.getString("myUserId");
                 String selectedPersonEmail = object.getString("myUserEmail");
                 String selectedPersonName = object.getString("myName");
-                selectedMyUserLevel = pref.getArrayOfPersonSelected()[i].getMyUserLevel();
+                final int selectedMyUserLevel = pref.getArrayOfPersonSelected()[arrayOfI[0]].getMyUserLevel();
 
                 //create new Person instance using above data
                 IPerson selectedPerson = new Person (selectedPersonId, selectedPersonEmail, selectedPersonName, selectedMyUserLevel, 0);
