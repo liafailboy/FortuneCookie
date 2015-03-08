@@ -49,19 +49,19 @@ public class IConnectorTest {
     public void testSetNewUserToServer() throws Exception {
 
         // True will be returned when the user was added on server
-        assertTrue(con.setNewUserToServer(pref));
+        assertTrue(con.setNewUserToServer(pref, "0925"));
 
         // False will be returned if the user try to add duplication ID and Email
-        assertFalse(con.setNewUserToServer(pref));
+        assertFalse(con.setNewUserToServer(pref, "0925"));
 
         // False will be returned if the user try to add dupulicate ID
         pref.setMyEmail("liafailboy@gmail.com");
-        assertFalse(con.setNewUserToServer(pref));
+        assertFalse(con.setNewUserToServer(pref, "0925"));
 
         // False will be returned if the user try to add dupulicate Email
         pref.setMyEmail("shotaro.w@gatech.edu");
         pref.setMyUserId("shotarow");
-        assertFalse(con.setNewUserToServer(pref));
+        assertFalse(con.setNewUserToServer(pref, "0925"));
     }
 
     @Test
@@ -77,7 +77,7 @@ public class IConnectorTest {
         pref.addPersonSelect(personL);
 
         // Update info on server
-        assertTrue(con.updateMyInfoOnServer(pref));
+        assertTrue(con.updateMyInfoOnServer(pref, "0925"));
 
         // Get the ID, Email, and Name from server and compare it to the local data
         assertEquals(pref.getMyUserId(), con.getUserIDFromServer());
@@ -129,7 +129,7 @@ public class IConnectorTest {
         pref.addPersonSelect(personJ);
         pref.addPersonSelect(personK);
 
-        con.setNewUserToServer(pref);
+        con.setNewUserToServer(pref, "0421");
 
         //create different instance of MyPref and Person with changed values
         MyPref tmpPref = new MyPref("Shotaro Watanabe", "liafailboy", "shotaro.w@gatech.edu");
@@ -172,7 +172,7 @@ public class IConnectorTest {
         expected[8] = personG;
         expected[9] = personI;
 
-        con.setNewUserToServer(tmpPref);
+        con.setNewUserToServer(tmpPref, "0925");
         assertTrue(con.refreshArrayOfPeople(pref));
 
         //check if array is really refreshed

@@ -72,6 +72,7 @@ public class Connector implements IConnector {
         // set the final variable to use argument in the inner class
         final MyPref pref = preference;
         final String password = pass;
+        final boolean[] tmpBoolean = {true};
 
         // Retrieve data as an query of the object
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("PersonalData");
@@ -87,10 +88,12 @@ public class Connector implements IConnector {
 	        		personalData.put("myPerson" + i + "Level", pref.getArrayOfPersonSelected()[i].getMyUserLevel());
 	        	}
 		      personalData.saveInBackground();
-		    }
+		    } else {
+                tmpBoolean[0] = false;
+            }
 		  }
 		});
-		return true;
+		return tmpBoolean[0];
 	}
 
 	@Override
