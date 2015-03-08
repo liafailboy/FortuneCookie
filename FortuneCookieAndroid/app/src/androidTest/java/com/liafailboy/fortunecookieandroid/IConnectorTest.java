@@ -14,8 +14,6 @@ public class IConnectorTest {
     @Before
     public void setUp() throws Exception {
 
-        // test forking
-
         // Initialize classes with arguments
         pref = new MyPref("Shotaro Watanabe", "liafailboy", "shotaro.w@gatech.edu");
         con = new Connector();
