@@ -11,6 +11,8 @@ public class IConnectorTest {
     Connector con;
     MyPref pref;
 
+    // test commiting
+
     @Before
     public void setUp() throws Exception {
 
