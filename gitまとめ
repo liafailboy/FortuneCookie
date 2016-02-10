@@ -20,7 +20,7 @@ WHILE ON MASTER
 git merge working
 
 // send the data to github
-git push
+git push origin master
 
 // change the current branch to working
 git checkout working
